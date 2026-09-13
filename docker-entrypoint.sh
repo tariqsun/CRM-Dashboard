@@ -41,9 +41,13 @@ if [ "$APP_ENV" = "development" ]; then
     -e "s|connect-src 'self' blob: https: wss: ws:;|connect-src 'self' blob: https: wss: ws: http://localhost:*;|" \
     -e "s|img-src 'self' data: blob: https:;|img-src 'self' data: blob: https: http://localhost:*;|" \
     -e "s|media-src 'self' blob: https:;|media-src 'self' blob: https: http://localhost:*;|" \
-    -e "s|frame-ancestors 'self';|frame-ancestors *;|" \
     "$NGINX_CONF"
 fi
+
+# Always ensure iframe embedding is allowed for Bizgrow and local development
+sed -i \
+  -e "s|frame-ancestors 'self';|frame-ancestors 'self' https://*.bizgrow.cloud https://bizgrow.cloud http://localhost:* http://127.0.0.1:*;|" \
+  "$NGINX_CONF"
 
 # Self-hosted over plain http (no TLS): media and API calls come from the API
 # origin and 'https:' does not cover http origins, so allow it explicitly.
