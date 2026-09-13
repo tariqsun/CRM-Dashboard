@@ -46,7 +46,7 @@ fi
 
 # Always ensure iframe embedding is allowed for Bizgrow and local development
 sed -i \
-  -e "s|frame-ancestors 'self';|frame-ancestors 'self' https://*.bizgrow.cloud https://bizgrow.cloud http://localhost:* http://127.0.0.1:*;|" \
+  -e "s|frame-ancestors 'self';|frame-ancestors *;|" \
   "$NGINX_CONF"
 
 # Self-hosted over plain http (no TLS): media and API calls come from the API
