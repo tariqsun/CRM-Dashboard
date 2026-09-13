@@ -114,7 +114,16 @@ export default function MainLayout({ children }: MainLayoutProps) {
 
   if (isEmbedded) {
     return (
-      <div className="flex flex-col h-dvh bg-background overflow-hidden">
+      <div className="flex h-dvh bg-background overflow-hidden relative">
+        <Sidebar
+          isCollapsed={true}
+          menuItems={menuItems}
+          activeSubmenu={menuState.activeSubmenu}
+          activeMenu={menuState.activeMenu}
+          isMenuWithSubItemsActive={menuState.isMenuWithSubItemsActive}
+          handleMenuClick={menuState.handleMenuClick}
+          setActiveSubmenu={menuState.setActiveSubmenu}
+        />
         <main className="flex-1 min-h-0 overflow-auto bg-background transition-colors duration-150 ease-in-out">
           <div className="h-full">
             <ErrorBoundary key={pathname}>{children}</ErrorBoundary>
