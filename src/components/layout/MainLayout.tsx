@@ -102,9 +102,26 @@ export default function MainLayout({ children }: MainLayoutProps) {
     setIsCollapsed(!isCollapsed);
   };
 
+  const isEmbedded = useMemo(() => {
+    const params = new URLSearchParams(location.search);
+    return params.get('embedded') === 'true' || window.self !== window.top;
+  }, [location.search]);
+
   // Se não há usuário, não renderizar o layout
   if (!user) {
     return <div className="flex h-screen items-center justify-center">{t('common.loading')}</div>;
+  }
+
+  if (isEmbedded) {
+    return (
+      <div className="flex flex-col h-dvh bg-background overflow-hidden">
+        <main className="flex-1 min-h-0 overflow-auto bg-background transition-colors duration-150 ease-in-out">
+          <div className="h-full">
+            <ErrorBoundary key={pathname}>{children}</ErrorBoundary>
+          </div>
+        </main>
+      </div>
+    );
   }
 
   return (
